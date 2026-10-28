@@ -1,0 +1,125 @@
+---
+import Base from '../../layouts/Base.astro';
+import VentureMark from '../../components/VentureMark.astro';
+import { ventures, type Venture } from '../../data/ventures';
+
+export function getStaticPaths() {
+  return ventures.filter((v) => v.detailPage).map((v) => ({ params: { slug: v.slug }, props: { venture: v } }));
+}
+
+const { venture: v } = Astro.props as { venture: Venture };
+const others = ventures.filter((o) => o.slug !== v.slug);
+const style = [
+  `--v-surface:${v.theme.surface}`, `--v-ink:${v.theme.ink}`, `--v-muted:${v.theme.muted}`,
+  `--v-accent:${v.theme.accent}`, `--v-button:${v.theme.button}`, `--v-button-ink:${v.theme.buttonInk}`,
+].join(';');
+---
+<Base title={v.name} description={`${v.name}, a Dove venture. ${v.description}`}>
+  <nav class="wrap crumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Dove</a></li>
+      <li><a href="/ventures/">Our ventures</a></li>
+      <li aria-current="page">{v.name}</li>
+    </ol>
+  </nav>
+
+  <section class="product-hero" style={style}>
+    <div class="wrap hero-inner">
+      <div>
+        <div class="hero-brand">
+          <VentureMark slug={v.slug} size={72} />
+          <p>{v.category}</p>
+        </div>
+        <h1>{v.name}</h1>
+        <p class="hero-desc">{v.description}</p>
+        {v.status && <p class="hero-status">{v.status}</p>}
+        <a class="hero-btn" href={v.url} rel="noopener">Visit {v.name}<span class="visually-hidden"> website</span></a>
+      </div>
+      {v.image ? (
+        <img class="hero-shot" src={v.image.src} alt={v.image.alt} width="1200" height="800" loading="eager" />
+      ) : (
+        <div class="hero-emblem" aria-hidden="true"><VentureMark slug={v.slug} size={220} /></div>
+      )}
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="problem-heading">
+    <div class="wrap detail-grid">
+      <div>
+        <h2 id="problem-heading">Who it is for</h2>
+        <p class="prose">{v.audience}</p>
+      </div>
+      <div>
+        <h2>The problem it solves</h2>
+        <p class="prose">{v.problem}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-white" aria-labelledby="helps-heading">
+    <div class="wrap detail-grid">
+      <h2 id="helps-heading">What {v.name} helps with</h2>
+      <ul class="caps" style={style}>
+        {v.capabilities.map((c) => <li>{c}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section--tight cta-band" aria-labelledby="visit-heading">
+    <div class="wrap cta-inner">
+      <div>
+        <h2 id="visit-heading">See {v.name} for yourself</h2>
+        <p class="lede">Full details, sign-up and support are on the {v.name} website.</p>
+      </div>
+      <a class="btn btn--primary" href={v.url} rel="noopener">Go to {v.name}</a>
+    </div>
+  </section>
+
+  <section class="section--tight family" aria-labelledby="family-heading">
+    <div class="wrap">
+      <h2 id="family-heading">{v.name} is a Dove venture</h2>
+      <p class="lede">Dove builds practical technology to solve meaningful problems and create lasting value.</p>
+      <div class="btn-row">
+        <a class="btn btn--ghost" href="/">About Dove</a>
+        {others.map((o) => <a class="btn btn--ghost" href={o.detailPage ? `/ventures/${o.slug}/` : o.url}>{o.name}</a>)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumbs ol { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0; padding: var(--space-s) 0; font-size: var(--step--1); color: var(--ink-muted); }
+  .crumbs li + li::before { content: '/'; margin-right: 0.5rem; color: var(--line); }
+  .crumbs a { color: var(--forest); }
+
+  .product-hero { background: var(--v-surface); color: var(--v-ink); padding-block: var(--space-xl); border-block: 1px solid color-mix(in srgb, var(--v-ink) 10%, transparent); }
+  .product-hero :focus-visible { outline-color: var(--v-accent); }
+  .hero-inner { display: grid; gap: var(--space-l); align-items: center; }
+  @media (min-width: 56rem) { .hero-inner { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); } }
+  .hero-brand { display: flex; align-items: center; gap: var(--space-s); margin-bottom: var(--space-l); }
+  .hero-brand p { font-weight: 600; color: var(--v-muted); font-size: var(--step--1); }
+  .hero-brand :global(svg) { box-shadow: 0 0 0 1px color-mix(in srgb, var(--v-ink) 14%, transparent); border-radius: 26%; }
+  .product-hero h1 { margin-bottom: var(--space-m); }
+  .hero-desc { font-size: var(--step-1); max-width: 36rem; margin-bottom: var(--space-l); }
+  .hero-status { font-weight: 600; margin-bottom: var(--space-m); }
+  .hero-btn { display: inline-flex; align-items: center; min-height: 3rem; padding: 0.75rem 1.4rem; border-radius: 999px; background: var(--v-button); color: var(--v-button-ink); font-weight: 600; text-decoration: none; }
+  .hero-emblem { justify-self: center; position: relative; padding: var(--space-l); }
+  .hero-emblem::before { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid var(--v-accent); opacity: 0.5; }
+  .hero-emblem :global(svg) { position: relative; border-radius: 26%; box-shadow: 0 0 0 1px color-mix(in srgb, var(--v-ink) 14%, transparent); }
+  @media (max-width: 55.99rem) { .hero-emblem { display: none; } }
+  .hero-shot { border-radius: var(--radius-m); width: 100%; height: auto; }
+
+  .detail-grid { display: grid; gap: var(--space-l); }
+  @media (min-width: 56rem) { .detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); } }
+  .detail-grid h2 { font-size: var(--step-3); margin-bottom: var(--space-s); max-width: 16ch; }
+  .prose { font-size: var(--step-1); color: #3d423a; max-width: 36rem; }
+  .caps { list-style: none; margin: 0; padding: 0; display: grid; }
+  .caps li { padding: var(--space-s) 0 var(--space-s) 1.6rem; border-top: 1px solid var(--line); font-size: var(--step-1); position: relative; }
+  .caps li::before { content: ''; position: absolute; left: 0; top: calc(var(--space-s) + 0.6em); width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--v-accent); }
+
+  .cta-band { background: var(--sage-soft); }
+  .cta-inner { display: grid; gap: var(--space-m); align-items: center; }
+  @media (min-width: 48rem) { .cta-inner { grid-template-columns: 1fr auto; } }
+  .cta-band h2, .family h2 { font-size: var(--step-3); margin-bottom: var(--space-2xs); }
+  .family .lede { margin-bottom: var(--space-m); }
+</style>

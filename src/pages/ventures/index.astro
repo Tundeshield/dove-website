@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import VenturePanel from '../../components/VenturePanel.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { ventures } from '../../data/ventures';
+---
+<Base title="Our Ventures" description="The products and businesses Dove is building, starting with Gather HQ and Pastora.">
+  <PageHero
+    title="Our ventures"
+    intro="Each Dove venture is a product with its own name, users and purpose. Our first two help churches care for their people and run their work. We will add new ventures here as they are ready."
+  />
+
+  <section class="section on-white" aria-label="Ventures">
+    <div class="wrap venture-list">
+      {ventures.map((v) => <VenturePanel venture={v} variant="full" headingLevel="h2" />)}
+    </div>
+  </section>
+
+  <section class="section--tight next" aria-labelledby="next-heading">
+    <div class="wrap next-inner">
+      <h2 id="next-heading">What comes next</h2>
+      <p class="lede">We are working on future ventures, including products for audiences beyond the church. When they are ready to share, they will appear on this page.</p>
+    </div>
+  </section>
+
+  <ContactCta heading="Interested in one of our ventures?" text="Tell us what you need, whether you want to use a product, partner with us or explore working together." />
+</Base>
+
+<style>
+  .venture-list { display: grid; gap: var(--space-m); }
+  @media (min-width: 60rem) { .venture-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .next { border-top: 1px solid var(--line); }
+  .next-inner { display: grid; gap: var(--space-s); }
+  @media (min-width: 56rem) { .next-inner { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-xl); align-items: baseline; } }
+  .next h2 { font-size: var(--step-3); }
+</style>

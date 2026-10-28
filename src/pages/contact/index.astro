@@ -1,0 +1,156 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { site } from '../../data/site';
+import { ventures } from '../../data/ventures';
+
+const enquiryTypes = [
+  'Partnership or collaboration',
+  ...ventures.map((v) => `Using ${v.name}`),
+  'Press or media',
+  'Something else',
+];
+---
+<Base title="Contact" description="Get in touch with Dove about partnerships, collaboration, our products or anything else.">
+  <PageHero
+    title="Get in touch"
+    intro="Partners, collaborators, customers and anyone curious about our work are welcome. Send us a message and we will reply by email."
+  />
+
+  <section class="section on-white">
+    <div class="wrap contact-grid">
+      <div class="contact-aside">
+        <h2>How we can help</h2>
+        <p>Tell us a little about what you have in mind. A sentence or two is plenty to start.</p>
+        <p>If your question is about using one of our products, you can also visit it directly:</p>
+        <ul>
+          {ventures.map((v) => <li><a href={v.url} rel="noopener">{v.name}</a></li>)}
+        </ul>
+        {site.email && (
+          <p class="contact-email">Prefer email? Write to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+        )}
+      </div>
+
+      <!-- Submissions are handled by Netlify Forms. Without JavaScript the form posts normally and lands on /contact/thanks/. -->
+      <form
+        class="contact-form"
+        name="contact"
+        method="POST"
+        action="/contact/thanks/"
+        data-netlify="true"
+        netlify-honeypot="company-website"
+        novalidate
+      >
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="honeypot" aria-hidden="true">
+          <label>Leave this field empty <input name="company-website" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required maxlength="120" aria-describedby="name-error" />
+          <p class="error" id="name-error" hidden>Enter your name.</p>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" aria-describedby="email-error" />
+          <p class="error" id="email-error" hidden>Enter an email address, like name@example.com.</p>
+        </div>
+
+        <div class="field">
+          <label for="enquiry">What is it about?</label>
+          <select id="enquiry" name="enquiry" required aria-describedby="enquiry-error">
+            <option value="">Choose a topic</option>
+            {enquiryTypes.map((t) => <option value={t}>{t}</option>)}
+          </select>
+          <p class="error" id="enquiry-error" hidden>Choose a topic.</p>
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="message-error"></textarea>
+          <p class="error" id="message-error" hidden>Write a message of at least 10 characters.</p>
+        </div>
+
+        <button type="submit" class="btn btn--primary">Send message</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contact-form');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('.form-status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input[required], textarea[required], select[required]'));
+
+    const check = (el: (typeof fields)[number]) => {
+      const valid = el.checkValidity() && el.value.trim().length > 0;
+      const err = document.getElementById(`${el.id}-error`);
+      el.setAttribute('aria-invalid', String(!valid));
+      if (err) err.hidden = valid;
+      return valid;
+    };
+    fields.forEach((el) => el.addEventListener('blur', () => { if (el.value) check(el); }));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const invalid = fields.filter((el) => !check(el));
+      if (invalid.length) { invalid[0].focus(); status.textContent = ''; return; }
+
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      status.className = 'form-status';
+      status.textContent = '';
+      try {
+        const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString();
+        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        fields.forEach((el) => el.removeAttribute('aria-invalid'));
+        status.classList.add('is-success');
+        status.textContent = 'Message sent. Thank you, we will reply by email.';
+        button.textContent = 'Message sent';
+        setTimeout(() => { button.disabled = false; button.textContent = 'Send message'; }, 4000);
+      } catch {
+        status.classList.add('is-error');
+        status.textContent = 'Your message was not sent. Check your connection and try again.';
+        button.disabled = false;
+        button.textContent = 'Send message';
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-grid { display: grid; gap: var(--space-xl); }
+  @media (min-width: 56rem) { .contact-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); } }
+  .contact-aside h2 { font-size: var(--step-3); margin-bottom: var(--space-s); }
+  .contact-aside p { color: var(--ink-muted); margin-bottom: var(--space-s); max-width: 28rem; }
+  .contact-aside ul { margin: 0 0 var(--space-m); padding-left: 1.1rem; }
+  .contact-aside a { color: var(--forest); font-weight: 600; }
+
+  .contact-form { display: grid; gap: var(--space-m); max-width: 36rem; }
+  .field { display: grid; gap: 0.4rem; }
+  label { font-weight: 600; }
+  input, select, textarea {
+    font: inherit; color: var(--ink);
+    background: var(--cream); border: 1.5px solid #c9c2b0; border-radius: var(--radius-s);
+    padding: 0.75rem 0.9rem; width: 100%;
+  }
+  textarea { resize: vertical; min-height: 9rem; }
+  input:hover, select:hover, textarea:hover { border-color: #9e9784; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; border-color: var(--forest); }
+  [aria-invalid='true'] { border-color: #a3352b; }
+  .error { color: #a3352b; font-size: var(--step--1); font-weight: 500; }
+  .contact-form .btn { justify-self: start; }
+  .contact-form .btn:disabled { opacity: 0.7; cursor: default; }
+  .form-status:empty { display: none; }
+  .form-status { padding: 0.8rem 1rem; border-radius: var(--radius-s); font-weight: 500; }
+  .form-status.is-success { background: var(--sage-soft); color: var(--forest); }
+  .form-status.is-error { background: #f6e3df; color: #8a2a21; }
+  .honeypot { position: absolute; left: -10000px; }
+</style>

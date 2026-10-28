@@ -1,0 +1,102 @@
+---
+import VentureMark from './VentureMark.astro';
+import type { Venture } from '../data/ventures';
+
+interface Props {
+  venture: Venture;
+  /** `summary` for the homepage, `full` for the ventures page (adds the capability list). */
+  variant?: 'summary' | 'full';
+  headingLevel?: 'h2' | 'h3';
+}
+const { venture: v, variant = 'summary', headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const style = [
+  `--v-surface:${v.theme.surface}`,
+  `--v-ink:${v.theme.ink}`,
+  `--v-muted:${v.theme.muted}`,
+  `--v-accent:${v.theme.accent}`,
+  `--v-button:${v.theme.button}`,
+  `--v-button-ink:${v.theme.buttonInk}`,
+].join(';');
+---
+<article class:list={['venture', `venture--${variant}`]} style={style} aria-labelledby={`venture-${v.slug}`}>
+  <div class="venture-top">
+    <VentureMark slug={v.slug} size={variant === 'full' ? 64 : 52} />
+    <p class="venture-category">{v.category}</p>
+  </div>
+
+  <Heading id={`venture-${v.slug}`} class="venture-name">{v.name}</Heading>
+  <p class="venture-description">{v.description}</p>
+
+  <div class="venture-problem">
+    <p class="venture-problem-label">The problem it solves</p>
+    <p>{v.problem}</p>
+  </div>
+
+  {variant === 'full' && (
+    <div class="venture-capabilities">
+      <p class="venture-problem-label">What it helps with</p>
+      <ul>{v.capabilities.map((c) => <li>{c}</li>)}</ul>
+    </div>
+  )}
+
+  {v.status && <p class="venture-status">{v.status}</p>}
+
+  <div class="venture-actions">
+    <a class="venture-btn" href={v.url} rel="noopener">
+      Visit {v.name}<span class="visually-hidden"> website</span>
+    </a>
+    {v.detailPage && (
+      <a class="venture-more" href={`/ventures/${v.slug}/`}>About {v.name}</a>
+    )}
+  </div>
+</article>
+
+<style>
+  .venture {
+    position: relative;
+    display: flex; flex-direction: column;
+    background: var(--v-surface); color: var(--v-ink);
+    border-radius: var(--radius-l);
+    padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+    min-height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* A soft accent arc, in the venture's own accent colour */
+  .venture::after {
+    content: '';
+    position: absolute; z-index: -1;
+    width: 22rem; height: 22rem; right: -12rem; top: -13rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--v-accent);
+    opacity: 0.45;
+  }
+  .venture :focus-visible { outline-color: var(--v-accent); }
+  .venture-top { display: flex; align-items: center; gap: var(--space-s); margin-bottom: var(--space-l); }
+  .venture-top :global(svg) { flex: none; box-shadow: 0 0 0 1px color-mix(in srgb, var(--v-ink) 14%, transparent); border-radius: 26%; }
+  .venture-category { font-size: var(--step--1); font-weight: 600; color: var(--v-muted); max-width: 18rem; line-height: 1.35; }
+  .venture-name { font-size: var(--step-4); font-variation-settings: 'opsz' 60; margin-bottom: var(--space-s); }
+  .venture-description { font-size: var(--step-1); line-height: 1.5; max-width: 34rem; }
+  .venture-problem, .venture-capabilities {
+    margin-top: var(--space-l); padding-top: var(--space-m);
+    border-top: 1px solid color-mix(in srgb, var(--v-ink) 20%, transparent);
+    max-width: 36rem; color: var(--v-muted);
+  }
+  .venture-problem-label { font-size: var(--step--1); font-weight: 600; color: var(--v-ink); margin-bottom: 0.4rem; }
+  .venture-capabilities ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.4rem; }
+  .venture-capabilities li { position: relative; padding-left: 1.3rem; }
+  .venture-capabilities li::before {
+    content: ''; position: absolute; left: 0; top: 0.62em;
+    width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--v-accent);
+  }
+  .venture-status { margin-top: var(--space-m); font-size: var(--step--1); font-weight: 600; }
+  .venture-actions { margin-top: auto; padding-top: var(--space-l); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-m); }
+  .venture-btn {
+    display: inline-flex; align-items: center; min-height: 3rem; padding: 0.75rem 1.4rem;
+    border-radius: 999px; background: var(--v-button); color: var(--v-button-ink);
+    font-weight: 600; text-decoration: none;
+  }
+  .venture-btn:hover { filter: brightness(1.06); }
+  .venture-more { font-weight: 600; }
+</style>

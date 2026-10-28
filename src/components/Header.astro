@@ -1,0 +1,92 @@
+---
+import DoveMark from './DoveMark.astro';
+import { nav } from '../data/site';
+
+interface Props { dark?: boolean; }
+const { dark = false } = Astro.props;
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<header class:list={['site-header', { 'on-dark': dark }]}>
+  <div class="wrap bar">
+    <a href="/" class="brand" aria-label="Dove home">
+      <DoveMark size={34} />
+      <span class="wordmark">Dove</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+      <span class="menu-label">Menu</span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+      <a href="/ventures/" class="btn btn--primary nav-cta">Explore our ventures</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const navEl = document.getElementById('site-nav');
+  if (toggle && navEl) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      navEl.classList.toggle('is-open', open);
+      document.body.classList.toggle('nav-open', open);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
+    });
+    window.matchMedia('(min-width: 52rem)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  }
+</script>
+
+<style>
+  .site-header { position: relative; z-index: 20; background: var(--cream); color: var(--charcoal); }
+  .site-header.on-dark { background: var(--forest); color: var(--cream); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-m); min-height: 5rem; }
+  .brand { display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none; }
+  .wordmark { font-family: var(--serif); font-size: 1.7rem; font-variation-settings: 'opsz' 36; letter-spacing: -0.02em; line-height: 1; }
+
+  .site-nav { display: flex; align-items: center; gap: var(--space-l); }
+  .site-nav ul { display: flex; gap: var(--space-m); list-style: none; margin: 0; padding: 0; }
+  .site-nav ul a { text-decoration: none; font-weight: 500; padding-block: 0.4rem; border-bottom: 1.5px solid transparent; }
+  .site-nav ul a:hover, .site-nav ul a[aria-current='page'] { border-bottom-color: currentColor; }
+  .nav-cta { min-height: 2.6rem; padding: 0.55rem 1.1rem; font-size: var(--step--1); }
+
+  .menu-toggle {
+    display: none; align-items: center; gap: 0.5rem;
+    background: none; border: 1.5px solid currentColor; color: inherit;
+    border-radius: 999px; padding: 0.5rem 0.9rem; font: 600 var(--step--1) var(--sans); cursor: pointer;
+  }
+  .menu-icon { display: grid; gap: 4px; width: 16px; }
+  .menu-icon span { height: 1.5px; background: currentColor; transition: transform 0.2s ease; }
+  .menu-toggle[aria-expanded='true'] .menu-icon span:first-child { transform: translateY(2.75px) rotate(45deg); }
+  .menu-toggle[aria-expanded='true'] .menu-icon span:last-child { transform: translateY(-2.75px) rotate(-45deg); }
+
+  @media (max-width: 51.99rem) {
+    .menu-toggle { display: inline-flex; }
+    .site-nav {
+      display: none;
+      position: absolute; inset: 100% 0 auto 0;
+      flex-direction: column; align-items: stretch; gap: var(--space-m);
+      padding: var(--space-m) var(--gutter) var(--space-l);
+      background: inherit; border-bottom: 1px solid var(--line);
+    }
+    .on-dark .site-nav { background: var(--forest); border-color: rgba(245, 241, 232, 0.15); }
+    .site-nav.is-open { display: flex; }
+    .site-nav ul { flex-direction: column; gap: 0; }
+    .site-nav ul a { display: block; padding-block: 0.9rem; font-family: var(--serif); font-size: var(--step-2); border-bottom: 1px solid var(--line); }
+    .on-dark .site-nav ul a { border-bottom-color: rgba(245, 241, 232, 0.15); }
+    .site-nav ul a[aria-current='page'] { border-bottom-color: currentColor; }
+    .nav-cta { min-height: 3rem; font-size: var(--step-0); }
+  }
+</style>

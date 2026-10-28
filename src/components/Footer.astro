@@ -1,0 +1,65 @@
+---
+import DoveMark from './DoveMark.astro';
+import { nav, site } from '../data/site';
+import { ventures } from '../data/ventures';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="/" class="brand" aria-label="Dove home">
+          <DoveMark size={38} color="#F5F1E8" />
+          <span class="wordmark">Dove</span>
+        </a>
+        <p>Dove builds practical technology to solve meaningful problems and create lasting value.</p>
+      </div>
+
+      <nav aria-label="Footer: company">
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav aria-label="Footer: ventures">
+        <h2>Ventures</h2>
+        <ul>
+          {ventures.map((v) => (
+            <li><a href={v.url} rel="noopener">{v.name}<span class="visually-hidden"> (opens the {v.name} website)</span></a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div>
+        <h2>Get in touch</h2>
+        <ul>
+          {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
+          <li><a href="/contact/">Send us a message</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <p>© {year} {site.legalName ?? 'Dove'}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--charcoal); color: #d8dbd2; padding-block: var(--space-xl) var(--space-l); }
+  .site-footer :focus-visible { outline-color: var(--sage); }
+  .footer-grid { display: grid; gap: var(--space-l); grid-template-columns: 1fr 1fr; }
+  @media (min-width: 52rem) { .footer-grid { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
+  .footer-about { grid-column: 1 / -1; max-width: 22rem; }
+  @media (min-width: 52rem) { .footer-about { grid-column: auto; } }
+  .brand { display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none; color: var(--cream); margin-bottom: var(--space-s); }
+  .wordmark { font-family: var(--serif); font-size: 1.8rem; letter-spacing: -0.02em; line-height: 1; }
+  .footer-about p { color: #b8bcb1; }
+  h2 { font-family: var(--sans); font-size: var(--step--1); font-weight: 600; letter-spacing: 0.01em; color: var(--sage); margin-bottom: var(--space-xs); }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+  a { text-decoration: none; }
+  ul a:hover { text-decoration: underline; color: var(--cream); }
+  .footer-base { margin-top: var(--space-xl); padding-top: var(--space-m); border-top: 1px solid rgba(255, 255, 255, 0.12); font-size: var(--step--1); color: #9a9f94; }
+</style>

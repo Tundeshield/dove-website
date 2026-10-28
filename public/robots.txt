@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dove-ventures.netlify.app/sitemap.xml

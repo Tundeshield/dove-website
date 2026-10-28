@@ -1,0 +1,30 @@
+---
+/**
+ * Product marks, copied from each product's own repository so they stay faithful:
+ *  - Gather HQ: Tundeshield/gatherwell brand/gatherhq-mark.svg
+ *  - Pastora:   Tundeshield/Pastora-Platform artifacts/pastora/public/favicon.svg
+ * Add a new case here when a venture is added to src/data/ventures.ts.
+ */
+interface Props { slug: string; size?: number; }
+const { slug, size = 56 } = Astro.props;
+---
+{slug === 'gather-hq' && (
+  <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
+    <rect width="40" height="40" rx="10" fill="#244E43" />
+    <path d="M28.78 11.53 A12.2 12.2 0 1 0 29.54 27.6 L26.8 27.6 A6.8 4.2 0 0 0 13.2 27.6" fill="none" stroke="#F6F7F3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="20" cy="18.2" r="3.3" fill="#C69B55" />
+  </svg>
+)}
+{slug === 'pastora' && (
+  <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+    <rect width="64" height="64" rx="14" fill="#f7f1e4" />
+    <g transform="translate(32 32) scale(.62)">
+      <circle r="36" fill="none" stroke="#345647" stroke-width="6" />
+      <g transform="rotate(35)">
+        <path d="M0 -29 C11 -15 9 -4 0 0 C-9 -4 -11 -15 0 -29 Z" fill="#c8954f" />
+        <path d="M0 29 C11 15 9 4 0 0 C-9 4 -11 15 0 29 Z" fill="#345647" />
+      </g>
+      <circle r="3.5" fill="#f7f1e4" />
+    </g>
+  </svg>
+)}

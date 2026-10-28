@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { principles, values } from '../data/principles';
+import { ventures } from '../data/ventures';
+---
+<Base title="Our Story" description="Why Dove exists, how we build products, and the principles and values that guide our work.">
+  <PageHero
+    title="We build things that help people do good work."
+    intro="Dove exists to turn practical problems into useful, lasting products. This page explains why we do it, how we go about it and where we hope it leads."
+  />
+
+  <section class="section story" aria-labelledby="why-heading">
+    <div class="wrap story-grid">
+      <h2 id="why-heading">Why Dove exists</h2>
+      <div class="prose">
+        <p>A lot of important work still runs on goodwill, paper notebooks and memory. Communities, organisations and teams do remarkable things, but the tools around them often make that work harder than it needs to be.</p>
+        <p>Dove exists to help close that gap. We build technology that takes on the routine, error-prone parts of people's work, so they can give more of their attention to the people and purposes they serve.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section story on-white" aria-labelledby="purpose-heading">
+    <div class="wrap story-grid">
+      <h2 id="purpose-heading">Our purpose and long-term vision</h2>
+      <div class="prose">
+        <p>Our purpose is simple: build practical technology that solves meaningful problems and creates lasting value.</p>
+        <p>Over time we want Dove to become the home of a growing portfolio of purposeful businesses. Each venture will have its own name, its own users and its own focus. What connects them is the way they are built and the values behind them.</p>
+        <p>Our first ventures, {ventures.map((v) => v.name).join(' and ')}, serve churches. Future ventures may serve very different communities and markets.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section story" aria-labelledby="approach-heading">
+    <div class="wrap story-grid">
+      <h2 id="approach-heading">How we build products</h2>
+      <div class="prose">
+        <p>We prefer to start small and close to the people we are building for. We listen, release something useful early, and improve it in steady, careful steps based on what we learn.</p>
+        <p>Every Dove product is held to the same working principles:</p>
+        <ul class="principle-list">
+          {principles.map((p) => (
+            <li><strong>{p.title}.</strong> {p.text}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-dark values" aria-labelledby="values-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="values-heading">The values behind our work</h2>
+        <p class="lede">Our values are informed by Christian convictions. They shape how we treat customers, partners and each other, whatever market a venture serves.</p>
+      </div>
+      <ul class="values-grid">
+        {values.map((v) => (
+          <li>
+            <h3>{v.title}</h3>
+            <p>{v.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section story" aria-labelledby="ambition-heading">
+    <div class="wrap story-grid">
+      <h2 id="ambition-heading">Building more than one business</h2>
+      <div class="prose">
+        <p>We are building Dove to last. That means choosing ventures with long-term potential, looking after them well and only adding new ones when we can serve their users properly.</p>
+        <p>As new ventures are ready to share, you will find them on our <a href="/ventures/">ventures page</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta heading="Want to build with us?" text="We are glad to hear from potential partners, collaborators and anyone who shares our interest in useful, purposeful technology." />
+</Base>
+
+<style>
+  .story-grid { display: grid; gap: var(--space-m); }
+  @media (min-width: 56rem) { .story-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-xl); } }
+  .story h2 { font-size: var(--step-3); font-variation-settings: 'opsz' 48; max-width: 14ch; }
+  .prose { max-width: 38rem; font-size: var(--step-1); line-height: 1.6; color: #3d423a; }
+  .prose a { color: var(--forest); font-weight: 600; }
+  .principle-list { margin: 1em 0 0; padding: 0; list-style: none; display: grid; gap: var(--space-s); font-size: var(--step-0); }
+  .principle-list li { padding-left: 1.25rem; border-left: 2px solid var(--sage); }
+  .principle-list strong { color: var(--charcoal); }
+  .values-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-l); }
+  @media (min-width: 40rem) { .values-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .values-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .values-grid li { padding-top: var(--space-m); border-top: 1px solid rgba(245, 241, 232, 0.25); }
+  .values-grid h3 { margin-bottom: var(--space-2xs); }
+  .values-grid p { color: #d6ddd1; }
+</style>

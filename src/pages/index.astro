@@ -1,0 +1,140 @@
+---
+import Base from '../layouts/Base.astro';
+import DoveMark from '../components/DoveMark.astro';
+import VenturePanel from '../components/VenturePanel.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { ventures } from '../data/ventures';
+import { principles } from '../data/principles';
+---
+<Base darkHeader>
+  <!-- Hero -->
+  <section class="hero on-dark">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Building useful products. Creating lasting impact.</h1>
+        <p class="lede">Dove is a company that builds technology businesses around real needs. Each of our products starts with a practical problem and is built to keep creating value for the people who use it.</p>
+        <div class="btn-row">
+          <a href="/ventures/" class="btn btn--primary">Explore our ventures</a>
+          <a href="/our-story/" class="btn btn--ghost">Our story</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-horizon"></div>
+        <DoveMark size="100%" color="#F5F1E8" draw />
+      </div>
+    </div>
+  </section>
+
+  <!-- What Dove is -->
+  <section class="section intro" aria-labelledby="intro-heading">
+    <div class="wrap intro-grid">
+      <h2 id="intro-heading" class="intro-statement">Dove builds practical technology to solve meaningful problems and create lasting value.</h2>
+      <div class="intro-points">
+        <div>
+          <h3>What we do</h3>
+          <p>We design, build and run software products. Each one is its own venture, with its own name and its own users, and Dove is the company behind them.</p>
+        </div>
+        <div>
+          <h3>Why we exist</h3>
+          <p>Many everyday problems are still handled with paper, scattered spreadsheets and memory. We believe well-made software can lift that weight, so people can spend their time on the work that matters to them.</p>
+        </div>
+        <div>
+          <h3>How we build</h3>
+          <p>We start small and close to the people we serve, listen carefully, and improve our products steadily over time. We would rather build something useful than something loud.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ventures -->
+  <section class="section on-white" id="ventures" aria-labelledby="ventures-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="ventures-heading">Our ventures</h2>
+        <p class="lede">Our first two products serve churches, helping leaders look after their people and run their work with less friction. More ventures, for other communities and markets, will follow.</p>
+      </div>
+      <div class="venture-grid">
+        {ventures.map((v) => <VenturePanel venture={v} />)}
+      </div>
+      <p class="more-link"><a href="/ventures/" class="text-link">See all ventures</a></p>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section on-sage" aria-labelledby="approach-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="approach-heading">How we work</h2>
+        <p class="lede">These are the working principles behind every Dove product. They guide our decisions today, and we hold ourselves to them as we grow.</p>
+      </div>
+      <ul class="principles">
+        {principles.map((p) => (
+          <li>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section class="section vision" aria-labelledby="vision-heading">
+    <div class="wrap vision-grid">
+      <h2 id="vision-heading" class="visually-hidden">Our broader vision</h2>
+      <p class="vision-text">Gather HQ and Pastora are a beginning. Our ambition is to build a growing family of purposeful businesses, each solving a real problem well, in church life and beyond it.</p>
+      <div class="vision-side">
+        <p>Our values are shaped by Christian convictions: integrity in how we work, service to the people who use what we make, and careful stewardship of the time and trust placed in us.</p>
+        <a href="/our-story/" class="text-link">Read our story</a>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>
+
+<style>
+  /* Hero */
+  .hero { padding-block: var(--space-l) var(--space-2xl); overflow: hidden; }
+  .hero-grid { display: grid; gap: var(--space-l); align-items: center; }
+  @media (min-width: 56rem) { .hero-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--space-xl); } }
+  .hero h1 { max-width: 13ch; margin-bottom: var(--space-m); }
+  .hero .lede { margin-bottom: var(--space-l); max-width: 34rem; }
+  .hero-art { position: relative; width: min(100%, 30rem); justify-self: center; aspect-ratio: 1; }
+  .hero-horizon {
+    position: absolute; inset: 6%;
+    border-radius: 50%;
+    border: 1px solid rgba(185, 198, 177, 0.35);
+    box-shadow: inset 0 0 0 2.25rem rgba(185, 198, 177, 0.06);
+  }
+  .hero-art :global(.dove-mark) { position: relative; }
+  @media (max-width: 55.99rem) { .hero-art { width: min(70%, 18rem); order: -1; justify-self: start; } }
+
+  /* Intro */
+  .intro-grid { display: grid; gap: var(--space-xl); }
+  @media (min-width: 56rem) { .intro-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  .intro-statement { font-size: var(--step-3); font-variation-settings: 'opsz' 48; line-height: 1.15; max-width: 18ch; }
+  @media (min-width: 56rem) { .intro-statement { position: sticky; top: var(--space-l); align-self: start; } }
+  .intro-points { display: grid; gap: var(--space-l); }
+  .intro-points > div { padding-top: var(--space-m); border-top: 1px solid var(--line); max-width: 34rem; }
+  .intro-points h3 { font-size: var(--step-2); margin-bottom: var(--space-2xs); }
+  .intro-points p { color: var(--ink-muted); }
+
+  /* Ventures */
+  .venture-grid { display: grid; gap: var(--space-m); }
+  @media (min-width: 60rem) { .venture-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .more-link { margin-top: var(--space-l); }
+
+  /* Principles: not a sequence, so no numbering */
+  .principles { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  @media (min-width: 48rem) { .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-xl); } }
+  .principles li { padding-block: var(--space-m) var(--space-l); border-top: 1px solid rgba(38, 61, 46, 0.25); }
+  .principles h3 { margin-bottom: var(--space-2xs); }
+  .principles p { color: #3f473d; max-width: 30rem; }
+
+  /* Vision */
+  .vision-grid { display: grid; gap: var(--space-l); }
+  @media (min-width: 56rem) { .vision-grid { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: end; gap: var(--space-xl); } }
+  .vision-text { font-family: var(--serif); font-size: var(--step-3); font-variation-settings: 'opsz' 48; line-height: 1.2; letter-spacing: -0.01em; max-width: 24ch; text-wrap: balance; }
+  .vision-side p { color: var(--ink-muted); margin-bottom: var(--space-s); }
+</style>

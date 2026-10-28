@@ -1,0 +1,27 @@
+---
+import DoveMark from './DoveMark.astro';
+interface Props { heading?: string; text?: string; }
+const {
+  heading = 'Let’s talk.',
+  text = 'Whether you want to partner with us, collaborate on something, try one of our products or simply learn more, we would be glad to hear from you.',
+} = Astro.props;
+---
+<section class="contact-cta on-dark" aria-labelledby="contact-cta-heading">
+  <div class="wrap inner">
+    <DoveMark size={72} color="#F5F1E8" class="cta-mark" />
+    <div>
+      <h2 id="contact-cta-heading">{heading}</h2>
+      <p class="lede">{text}</p>
+    </div>
+    <div class="btn-row">
+      <a href="/contact/" class="btn btn--primary">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-cta { padding-block: var(--space-xl); }
+  .inner { display: grid; gap: var(--space-m); align-items: center; }
+  @media (min-width: 56rem) { .inner { grid-template-columns: auto 1fr auto; gap: var(--space-l); } }
+  h2 { font-size: var(--step-4); margin-bottom: var(--space-xs); }
+</style>
