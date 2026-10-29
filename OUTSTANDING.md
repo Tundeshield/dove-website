@@ -8,7 +8,7 @@ Nothing below is shown on the live site until it is provided. Placeholders are n
 - [ ] **Form notifications**: in Netlify, add an email notification for the `contact` form so submissions reach your inbox (see README).
 - [ ] **Custom domain**: the site uses `dove-ventures.netlify.app`. Update the three places listed in the README when a domain is chosen.
 - [ ] **Registered company name and address**: set `legalName` in `src/data/site.ts` for the footer copyright line.
-- [ ] **Dove logo approval**: the dove-with-olive-branch mark was created for this site. Approve it, or supply final artwork and replace `DoveMark.astro` and `public/favicon.svg` (then regenerate `favicon-32.png`, `apple-touch-icon.png` and `og-image.png`).
+- [x] **Dove logo direction**: open ring (primary) and solid disc (icons) approved in principle. For final artwork, replace `DoveMark.astro` and `public/favicon.svg` (then regenerate `favicon-32.png`, `apple-touch-icon.png` and `og-image.png`).
 - [ ] **Founder and origin story**: the Our Story page deliberately has no founder biography, dates or milestones. Add them only once written and approved.
 - [ ] **Product problem statements**: the "problem it solves" and "who it is for" text in `src/data/ventures.ts` was written from the confirmed product descriptions. Please review the wording.
 - [ ] **Product screenshots**: neither product has screenshots on the site yet. Add them via the `image` field (see README).

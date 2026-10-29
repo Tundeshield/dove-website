@@ -21,7 +21,7 @@ npm run preview  # serve the production build
 | Ventures (names, descriptions, URLs, colours) | `src/data/ventures.ts` |
 | Working principles and values | `src/data/principles.ts` |
 | Design tokens (colour, type, spacing, radii) | `src/styles/global.css` |
-| Dove mark | `src/components/DoveMark.astro`, `public/favicon.svg` |
+| Dove mark (open ring and disc versions) | `src/components/DoveMark.astro`, `public/favicon.svg` |
 | Product marks | `src/components/VentureMark.astro` |
 | Pages | `src/pages/` |
 
@@ -51,4 +51,5 @@ Without JavaScript, the form posts normally and shows `/contact/thanks/`.
 - Palette: Forest `#263D2E`, Cream `#F5F1E8`, Sage `#B9C6B1`, Charcoal `#242722`, White, with olive `#B08D4C` reserved for the Dove mark.
 - Type: Newsreader (headlines) and Hanken Grotesk (body and UI), self-hosted through Fontsource.
 - Each venture is shown in its own brand colours (set in `theme` on the venture) so products keep their identity inside Dove's frame.
+- Logo: a dove carrying an olive branch inside an open ring that begins at the wing tip. Use `<DoveMark />` (open ring) for the primary logo and `<DoveMark variant="disc" />` for icons and very small sizes.
 - The only animation is the Dove mark drawing itself once in the homepage hero. It is skipped when the visitor prefers reduced motion.

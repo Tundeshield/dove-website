@@ -19,7 +19,6 @@ import { principles } from '../data/principles';
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
-        <div class="hero-horizon"></div>
         <DoveMark size="100%" color="#F5F1E8" draw />
       </div>
     </div>
@@ -101,14 +100,7 @@ import { principles } from '../data/principles';
   .hero h1 { max-width: 13ch; margin-bottom: var(--space-m); }
   .hero .lede { margin-bottom: var(--space-l); max-width: 34rem; }
   .hero-art { position: relative; width: min(100%, 30rem); justify-self: center; aspect-ratio: 1; }
-  .hero-horizon {
-    position: absolute; inset: 6%;
-    border-radius: 50%;
-    border: 1px solid rgba(185, 198, 177, 0.35);
-    box-shadow: inset 0 0 0 2.25rem rgba(185, 198, 177, 0.06);
-  }
-  .hero-art :global(.dove-mark) { position: relative; }
-  @media (max-width: 55.99rem) { .hero-art { width: min(70%, 18rem); order: -1; justify-self: start; } }
+    @media (max-width: 55.99rem) { .hero-art { width: min(70%, 18rem); order: -1; justify-self: start; } }
 
   /* Intro */
   .intro-grid { display: grid; gap: var(--space-xl); }
