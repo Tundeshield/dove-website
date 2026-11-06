@@ -28,3 +28,13 @@ const { slug, size = 56 } = Astro.props;
     </g>
   </svg>
 )}
+{slug === 'selah-studio' && (
+  /* Interim mark until Selah Studio's own logo is supplied: a pause (two bars)
+     inside a speech curve, for "selah", the pause in the Psalms. */
+  <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
+    <rect width="40" height="40" rx="10" fill="#2B2540" />
+    <path d="M20 9.5 A10.5 10.5 0 1 1 11.2 26.2 L9.5 31 L14.4 29.2" fill="none" stroke="#F4F1F8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="16.2" y="15" width="2.6" height="10" rx="1.3" fill="#D9A86C" />
+    <rect x="21.2" y="15" width="2.6" height="10" rx="1.3" fill="#D9A86C" />
+  </svg>
+)}

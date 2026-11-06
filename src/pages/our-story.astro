@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ContactCta from '../components/ContactCta.astro';
 import { principles, values } from '../data/principles';
-import { ventures } from '../data/ventures';
+import { ventureNames } from '../data/ventures';
 ---
 <Base title="Our Story" description="Why Dove exists, how we build products, and the principles and values that guide our work.">
   <PageHero
@@ -27,7 +27,7 @@ import { ventures } from '../data/ventures';
       <div class="prose">
         <p>Our purpose is simple: build practical technology that solves meaningful problems and creates lasting value.</p>
         <p>Over time we want Dove to become the home of a growing portfolio of purposeful businesses. Each venture will have its own name, its own users and its own focus. What connects them is the way they are built and the values behind them.</p>
-        <p>Our first ventures, {ventures.map((v) => v.name).join(' and ')}, serve churches. Future ventures may serve very different communities and markets.</p>
+        <p>Our first ventures, {ventureNames()}, serve churches. Future ventures may serve very different communities and markets.</p>
       </div>
     </div>
   </section>

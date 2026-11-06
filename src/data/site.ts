@@ -9,13 +9,13 @@ export const site = {
   /** Used in <title>, meta description and social previews. */
   tagline: 'Building useful products. Creating lasting impact.',
   description:
-    'Dove builds practical technology to solve meaningful problems and create lasting value. Our ventures include Gather HQ and Pastora.',
+    'Dove builds practical technology to solve meaningful problems and create lasting value. Our ventures include Gather HQ, Pastora and Selah Studio.',
   /** Production URL, used for canonical links and social previews. Update when a custom domain is added. */
   url: 'https://dove-ventures.netlify.app',
   /** Public contact email. Not yet confirmed, so it is not shown. */
   email: null as string | null,
-  /** Registered company name and address, for the footer. Not yet confirmed. */
-  legalName: null as string | null,
+  /** Registered company name, shown in the footer. */
+  legalName: 'Dove House Limited' as string | null,
 };
 
 export const nav = [

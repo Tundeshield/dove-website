@@ -93,6 +93,38 @@ export const ventures: Venture[] = [
       buttonInk: '#F7F1E4',
     },
   },
+  {
+    slug: 'selah-studio',
+    name: 'Selah Studio',
+    category: 'Sermon-to-media for churches',
+    description:
+      'A sermon-to-media platform that turns sermon recordings into content churches can review and share, including clips, quote graphics and devotionals.',
+    problem:
+      'A sermon is often the most valuable thing a church produces each week, but turning it into posts, clips and devotionals takes time and skills many teams do not have. Selah Studio does the first pass, so the church team only has to review and publish.',
+    audience: 'Churches and their media and communications teams.',
+    capabilities: [
+      'Turn sermon recordings into short video clips',
+      'Create quote graphics from the message',
+      'Draft devotionals based on the sermon',
+      'Review everything before it is shared',
+    ],
+    url: 'https://selah-studio-hnxp.netlify.app',
+    detailPage: true,
+    theme: {
+      surface: '#2B2540',
+      ink: '#F4F1F8',
+      muted: '#C9C2DA',
+      accent: '#D9A86C',
+      button: '#F4F1F8',
+      buttonInk: '#2B2540',
+    },
+  },
 ];
 
 export const getVenture = (slug: string) => ventures.find((v) => v.slug === slug);
+
+/** "A", "A and B", "A, B and C" */
+export const ventureNames = () => {
+  const n = ventures.map((v) => v.name);
+  return n.length < 2 ? n.join('') : `${n.slice(0, -1).join(', ')} and ${n[n.length - 1]}`;
+};

@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import DoveMark from '../components/DoveMark.astro';
 import VenturePanel from '../components/VenturePanel.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { ventures } from '../data/ventures';
+import { ventures, ventureNames } from '../data/ventures';
 import { principles } from '../data/principles';
 ---
 <Base darkHeader>
@@ -50,7 +50,7 @@ import { principles } from '../data/principles';
     <div class="wrap">
       <div class="section-head">
         <h2 id="ventures-heading">Our ventures</h2>
-        <p class="lede">Our first two products serve churches, helping leaders look after their people and run their work with less friction. More ventures, for other communities and markets, will follow.</p>
+        <p class="lede">Our first products serve churches, helping leaders look after their people, run their work and share their message with less friction. More ventures, for other communities and markets, will follow.</p>
       </div>
       <div class="venture-grid">
         {ventures.map((v) => <VenturePanel venture={v} />)}
@@ -81,7 +81,7 @@ import { principles } from '../data/principles';
   <section class="section vision" aria-labelledby="vision-heading">
     <div class="wrap vision-grid">
       <h2 id="vision-heading" class="visually-hidden">Our broader vision</h2>
-      <p class="vision-text">Gather HQ and Pastora are a beginning. Our ambition is to build a growing family of purposeful businesses, each solving a real problem well, in church life and beyond it.</p>
+      <p class="vision-text">{ventureNames()} are a beginning. Our ambition is to build a growing family of purposeful businesses, each solving a real problem well, in church life and beyond it.</p>
       <div class="vision-side">
         <p>Our values are shaped by Christian convictions: integrity in how we work, service to the people who use what we make, and careful stewardship of the time and trust placed in us.</p>
         <a href="/our-story/" class="text-link">Read our story</a>
@@ -114,7 +114,9 @@ import { principles } from '../data/principles';
 
   /* Ventures */
   .venture-grid { display: grid; gap: var(--space-m); }
-  @media (min-width: 60rem) { .venture-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 46rem) { .venture-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 46rem) and (max-width: 67.99rem) { .venture-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
+  @media (min-width: 68rem) { .venture-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .more-link { margin-top: var(--space-l); }
 
   /* Principles: not a sequence, so no numbering */

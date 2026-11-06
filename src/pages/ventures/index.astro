@@ -3,12 +3,12 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import VenturePanel from '../../components/VenturePanel.astro';
 import ContactCta from '../../components/ContactCta.astro';
-import { ventures } from '../../data/ventures';
+import { ventures, ventureNames } from '../../data/ventures';
 ---
-<Base title="Our Ventures" description="The products and businesses Dove is building, starting with Gather HQ and Pastora.">
+<Base title="Our Ventures" description={`The products and businesses Dove is building, including ${ventureNames()}.`}>
   <PageHero
     title="Our ventures"
-    intro="Each Dove venture is a product with its own name, users and purpose. Our first two help churches care for their people and run their work. We will add new ventures here as they are ready."
+    intro="Each Dove venture is a product with its own name, users and purpose. Our first ventures help churches care for their people, run their work and share their message. We will add new ventures here as they are ready."
   />
 
   <section class="section on-white" aria-label="Ventures">
@@ -30,6 +30,7 @@ import { ventures } from '../../data/ventures';
 <style>
   .venture-list { display: grid; gap: var(--space-m); }
   @media (min-width: 60rem) { .venture-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 60rem) { .venture-list > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
   .next { border-top: 1px solid var(--line); }
   .next-inner { display: grid; gap: var(--space-s); }
   @media (min-width: 56rem) { .next-inner { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--space-xl); align-items: baseline; } }
