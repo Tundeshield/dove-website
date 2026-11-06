@@ -1,10 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import DoveMark from '../components/DoveMark.astro';
-import VenturePanel from '../components/VenturePanel.astro';
+import VentureList from '../components/VentureList.astro';
 import ContactCta from '../components/ContactCta.astro';
 import { ventures, ventureNames } from '../data/ventures';
 import { principles } from '../data/principles';
+
+/** How many ventures to list on the homepage before linking to the full list. */
+const HOME_LIMIT = 6;
 ---
 <Base darkHeader>
   <!-- Hero -->
@@ -52,10 +55,8 @@ import { principles } from '../data/principles';
         <h2 id="ventures-heading">Our ventures</h2>
         <p class="lede">Our first products serve churches, helping leaders look after their people, run their work and share their message with less friction. More ventures, for other communities and markets, will follow.</p>
       </div>
-      <div class="venture-grid">
-        {ventures.map((v) => <VenturePanel venture={v} />)}
-      </div>
-      <p class="more-link"><a href="/ventures/" class="text-link">See all ventures</a></p>
+      <VentureList ventures={ventures.slice(0, HOME_LIMIT)} />
+      <p class="more-link"><a href="/ventures/" class="text-link">{ventures.length > HOME_LIMIT ? `See all ${ventures.length} ventures` : 'More about our ventures'}</a></p>
     </div>
   </section>
 
@@ -113,10 +114,6 @@ import { principles } from '../data/principles';
   .intro-points p { color: var(--ink-muted); }
 
   /* Ventures */
-  .venture-grid { display: grid; gap: var(--space-m); }
-  @media (min-width: 46rem) { .venture-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (min-width: 46rem) and (max-width: 67.99rem) { .venture-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
-  @media (min-width: 68rem) { .venture-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .more-link { margin-top: var(--space-l); }
 
   /* Principles: not a sequence, so no numbering */

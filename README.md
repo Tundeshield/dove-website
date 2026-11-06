@@ -31,8 +31,9 @@ npm run preview  # serve the production build
 
 **Add a venture**
 1. Add an entry to `ventures` in `src/data/ventures.ts` (only confirmed facts).
-2. Add its logo as a new case in `src/components/VentureMark.astro`.
-3. Set `detailPage: true` to generate `/ventures/<slug>/` automatically. The homepage, ventures page, footer, contact topics and sitemap pick it up on their own.
+2. Add its logo as a new case in `src/components/VentureMark.astro` and add the slug to `known`. Until then it shows a lettermark in the venture's colours.
+   Give it a `sector` (add new sectors to `sectors` in `ventures.ts`) and a short `summary` for the list.
+3. Set `detailPage: true` to generate `/ventures/<slug>/` automatically. The homepage (first six ventures), the ventures page (grouped by sector), footer, contact topics and sitemap pick it up on their own.
 
 **Add a product screenshot**: put the image in `public/ventures/` and set `image: { src, alt }` on the venture. It replaces the logo emblem on the detail page.
 

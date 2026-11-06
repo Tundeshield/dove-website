@@ -1,0 +1,63 @@
+---
+/**
+ * Compact venture row. Built to stay readable as the portfolio grows:
+ * logo, name, category and a short description, with the whole row
+ * linking to the venture's page and a separate link to the product itself.
+ */
+import VentureMark from './VentureMark.astro';
+import type { Venture } from '../data/ventures';
+
+interface Props { venture: Venture; headingLevel?: 'h2' | 'h3'; }
+const { venture: v, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const primaryHref = v.detailPage ? `/ventures/${v.slug}/` : v.url;
+---
+<article class="row" style={`--v-accent:${v.theme.accent}`}>
+  <VentureMark slug={v.slug} size={44} name={v.name} colors={{ surface: v.theme.surface, ink: v.theme.ink }} />
+  <div class="body">
+    <Heading class="name">
+      <a class="main-link" href={primaryHref} rel={v.detailPage ? undefined : 'noopener'}>{v.name}</a>
+    </Heading>
+    <p class="category">{v.category}</p>
+    <p class="summary">{v.summary ?? v.description}</p>
+  </div>
+  <a class="visit" href={v.url} rel="noopener">Visit<span class="visually-hidden"> {v.name} website</span></a>
+</article>
+
+<style>
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--space-s);
+    align-items: start;
+    padding: var(--space-m) var(--space-xs) var(--space-m) 0;
+    border-top: 1px solid var(--line);
+    transition: background-color 0.15s ease;
+  }
+  .row :global(svg) { border-radius: 26%; box-shadow: 0 0 0 1px rgba(36, 39, 34, 0.1); }
+  .row::before {
+    content: ''; position: absolute; left: 0; top: -1px; height: 2px; width: 0;
+    background: var(--v-accent); transition: width 0.2s ease;
+  }
+  .row:hover::before, .row:focus-within::before { width: 100%; }
+
+  .name { font-size: var(--step-1); font-variation-settings: 'opsz' 24; line-height: 1.2; }
+  .main-link { text-decoration: none; }
+  /* Stretch the main link over the whole row */
+  .main-link::after { content: ''; position: absolute; inset: 0; }
+  .main-link:focus-visible { outline: none; }
+  .row:has(.main-link:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+  .category { font-size: var(--step--1); font-weight: 600; color: var(--ink-muted); margin-top: 0.15rem; }
+  .summary {
+    margin-top: 0.4rem; color: var(--ink-muted); font-size: var(--step--1); line-height: 1.5; max-width: 30rem;
+  }
+  .visit {
+    position: relative; z-index: 1;
+    font-size: var(--step--1); font-weight: 600; color: var(--forest);
+    padding: 0.35rem 0.8rem; border: 1px solid var(--line); border-radius: 999px;
+    text-decoration: none; white-space: nowrap; background: var(--white);
+  }
+  .visit:hover { border-color: var(--forest); }
+</style>

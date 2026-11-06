@@ -5,8 +5,16 @@
  *  - Pastora:   Tundeshield/Pastora-Platform artifacts/pastora/public/favicon.svg
  * Add a new case here when a venture is added to src/data/ventures.ts.
  */
-interface Props { slug: string; size?: number; }
-const { slug, size = 56 } = Astro.props;
+interface Props {
+  slug: string;
+  size?: number;
+  /** Used for the lettermark shown when a venture has no logo yet. */
+  name?: string;
+  colors?: { surface: string; ink: string };
+}
+const { slug, size = 56, name = '', colors = { surface: '#263D2E', ink: '#F5F1E8' } } = Astro.props;
+const known = ['gather-hq', 'pastora', 'selah-studio'];
+const initial = name.trim().charAt(0).toUpperCase() || '•';
 ---
 {slug === 'gather-hq' && (
   <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
@@ -36,5 +44,11 @@ const { slug, size = 56 } = Astro.props;
     <path d="M20 9.5 A10.5 10.5 0 1 1 11.2 26.2 L9.5 31 L14.4 29.2" fill="none" stroke="#F4F1F8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
     <rect x="16.2" y="15" width="2.6" height="10" rx="1.3" fill="#D9A86C" />
     <rect x="21.2" y="15" width="2.6" height="10" rx="1.3" fill="#D9A86C" />
+  </svg>
+)}
+{!known.includes(slug) && (
+  <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
+    <rect width="40" height="40" rx="10" fill={colors.surface} />
+    <text x="20" y="27" text-anchor="middle" font-family="'Newsreader Variable', Georgia, serif" font-size="20" fill={colors.ink}>{initial}</text>
   </svg>
 )}

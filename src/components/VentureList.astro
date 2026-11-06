@@ -1,0 +1,22 @@
+---
+/** A two-column list of compact venture rows (one column on small screens). */
+import VentureRow from './VentureRow.astro';
+import type { Venture } from '../data/ventures';
+
+interface Props { ventures: Venture[]; headingLevel?: 'h2' | 'h3'; }
+const { ventures, headingLevel = 'h3' } = Astro.props;
+---
+<ul class="venture-list" role="list">
+  {ventures.map((v) => <li><VentureRow venture={v} headingLevel={headingLevel} /></li>)}
+</ul>
+
+<style>
+  .venture-list { list-style: none; margin: 0; padding: 0; display: grid; column-gap: var(--space-xl); }
+  @media (min-width: 56rem) { .venture-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .venture-list > li { border-bottom: 1px solid transparent; }
+  /* Close the list with a bottom rule under the last row of each column */
+  .venture-list > li:last-child { border-bottom-color: var(--line); }
+  @media (min-width: 56rem) {
+    .venture-list > li:nth-last-child(2):nth-child(odd) { border-bottom-color: var(--line); }
+  }
+</style>

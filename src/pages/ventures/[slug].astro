@@ -27,7 +27,7 @@ const style = [
     <div class="wrap hero-inner">
       <div>
         <div class="hero-brand">
-          <VentureMark slug={v.slug} size={72} />
+          <VentureMark slug={v.slug} size={72} name={v.name} colors={{ surface: v.theme.surface === '#F7F1E4' ? v.theme.button : v.theme.surface, ink: v.theme.ink }} />
           <p>{v.category}</p>
         </div>
         <h1>{v.name}</h1>
@@ -38,7 +38,7 @@ const style = [
       {v.image ? (
         <img class="hero-shot" src={v.image.src} alt={v.image.alt} width="1200" height="800" loading="eager" />
       ) : (
-        <div class="hero-emblem" aria-hidden="true"><VentureMark slug={v.slug} size={220} /></div>
+        <div class="hero-emblem" aria-hidden="true"><VentureMark slug={v.slug} size={220} name={v.name} colors={{ surface: v.theme.button, ink: v.theme.buttonInk }} /></div>
       )}
     </div>
   </section>

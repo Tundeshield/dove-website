@@ -1,18 +1,26 @@
 /**
  * The Dove portfolio. Every venture on the site comes from this list.
  *
- * To add a venture: append an entry, add its mark to src/components/marks/ and
- * register it in VentureMark.astro. A detail page is generated automatically at
+ * To add a venture: append an entry and add its logo as a new case in
+ * src/components/VentureMark.astro. A detail page is generated automatically at
  * /ventures/<slug>/ when `detailPage` is true.
  *
  * Only list confirmed facts. Leave optional fields out rather than guessing.
  */
+/** Sectors in the order they appear on /ventures/. Add new ones here. */
+export const sectors = ['Church and ministry'] as const;
+export type Sector = (typeof sectors)[number];
+
 export type Venture = {
   slug: string;
   name: string;
-  /** Short category label shown above the name. */
+  /** Short category label shown under the name. */
   category: string;
-  /** One-sentence summary (confirmed product description). */
+  /** Sector the venture belongs to. Ventures are grouped by sector on /ventures/. */
+  sector: Sector;
+  /** Short line for venture lists (about 12 words). Falls back to `description`. */
+  summary?: string;
+  /** Full description (confirmed product description). */
   description: string;
   /** The problem the product solves, in plain language. */
   problem: string;
@@ -45,6 +53,8 @@ export const ventures: Venture[] = [
     slug: 'gather-hq',
     name: 'Gather HQ',
     category: 'Church attendance and membership',
+    sector: 'Church and ministry',
+    summary: 'Member records and attendance tracking across every branch of a church.',
     description:
       'Church attendance and membership management for organising member records and tracking attendance across branches.',
     problem:
@@ -70,6 +80,8 @@ export const ventures: Venture[] = [
     slug: 'pastora',
     name: 'Pastora',
     category: 'Church administration and pastoral care',
+    sector: 'Church and ministry',
+    summary: 'Prayer requests, counselling, guest welcome cards and tasks for church leaders.',
     description:
       'Church administration and pastoral care tools, including prayer requests, counselling appointments, guest welcome cards, tasks, and operational workflows.',
     problem:
@@ -97,6 +109,8 @@ export const ventures: Venture[] = [
     slug: 'selah-studio',
     name: 'Selah Studio',
     category: 'Sermon-to-media for churches',
+    sector: 'Church and ministry',
+    summary: 'Turns sermon recordings into clips, quote graphics and devotionals.',
     description:
       'A sermon-to-media platform that turns sermon recordings into content churches can review and share, including clips, quote graphics and devotionals.',
     problem:
@@ -122,6 +136,12 @@ export const ventures: Venture[] = [
 ];
 
 export const getVenture = (slug: string) => ventures.find((v) => v.slug === slug);
+
+/** Ventures grouped by sector, in sector order, skipping empty sectors. */
+export const venturesBySector = () =>
+  sectors
+    .map((sector) => ({ sector, items: ventures.filter((v) => v.sector === sector) }))
+    .filter((g) => g.items.length > 0);
 
 /** "A", "A and B", "A, B and C" */
 export const ventureNames = () => {
